@@ -1,0 +1,155 @@
+/*
+ * sistema.css — camada mínima sobre o Bootstrap 5.
+ * Só o que o Bootstrap não oferece nativamente:
+ *   1. Cor primária da marca
+ *   2. Sidebar fixa no desktop + off-canvas no celular
+ *   3. Estilo dos links da sidebar
+ *   4. Backdrop do mobile
+ *   5. Impressão
+ */
+
+/* 1. Cor primária da marca */
+:root {
+    --bs-primary: #1570A6;
+    --bs-primary-rgb: 21, 112, 166;
+    --bs-link-color: #1570A6;
+    --bs-link-hover-color: #12618F;
+    --navbar-height: 56px;
+    --sidebar-width: 240px;
+}
+
+.btn-primary {
+    --bs-btn-bg: #1570A6;
+    --bs-btn-border-color: #1570A6;
+    --bs-btn-hover-bg: #12618F;
+    --bs-btn-hover-border-color: #12618F;
+    --bs-btn-active-bg: #0d4d72;
+    --bs-btn-active-border-color: #0d4d72;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #1570A6;
+    --bs-btn-border-color: #1570A6;
+    --bs-btn-hover-bg: #1570A6;
+    --bs-btn-hover-border-color: #1570A6;
+}
+
+/* 2. Sidebar: sempre fixa à esquerda (position:fixed tira do fluxo do layout).
+      O JS em main.js controla a classe body.sidebar-aberta (mobile) e
+      html.sidebar-recolhida (desktop). */
+#sidebar {
+    position: fixed;
+    left: 0;
+    top: var(--navbar-height);
+    bottom: 0;
+    width: var(--sidebar-width);
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1035;
+    transition: transform .25s ease;
+}
+
+/* Conteúdo principal: empurra para a direita da sidebar no desktop */
+#conteudo {
+    margin-top: var(--navbar-height);
+    margin-left: var(--sidebar-width);
+    min-height: calc(100vh - var(--navbar-height));
+    transition: margin-left .25s ease;
+}
+
+/* Desktop: colapsar sidebar (classe html.sidebar-recolhida aplicada pelo JS) */
+html.sidebar-recolhida #sidebar {
+    transform: translateX(-100%);
+}
+html.sidebar-recolhida #conteudo {
+    margin-left: 0;
+}
+
+/* Mobile: sidebar escondida por padrão, aparece quando body.sidebar-aberta */
+@media (max-width: 767.98px) {
+    #sidebar {
+        transform: translateX(-100%);
+    }
+    body.sidebar-aberta #sidebar {
+        transform: translateX(0) !important;
+    }
+    #conteudo {
+        margin-left: 0 !important;
+    }
+}
+
+/* Backdrop escuro atrás da sidebar no celular; clicar fecha */
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: var(--navbar-height);
+    background: rgba(0, 0, 0, .45);
+    z-index: 1034;
+    cursor: pointer;
+}
+body.sidebar-aberta .sidebar-backdrop {
+    display: block;
+}
+
+/* 3. Links do menu lateral */
+#sidebar .nav-link {
+    color: rgba(255, 255, 255, .87);
+    border-radius: 0;
+    border-left: 3px solid transparent;
+    padding: .65rem 1rem;
+    white-space: nowrap;
+}
+
+#sidebar .nav-link:hover,
+#sidebar .nav-link:focus {
+    background: rgba(0, 0, 0, .15);
+    color: #fff;
+}
+
+#sidebar .nav-link.ativo {
+    background: rgba(0, 0, 0, .22);
+    border-left-color: rgba(255, 255, 255, .6);
+    color: #fff;
+    font-weight: 600;
+}
+
+#sidebar .submenu .nav-link {
+    padding-left: 2.9rem;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, .78);
+}
+
+/* Seta do grupo de submenu */
+.sidebar-seta { transition: transform .2s ease; }
+.collapsed .sidebar-seta { transform: rotate(-90deg); }
+
+/* 4. DataTables — espaçamento interno dos controles (length, filter, info, paginate) */
+div.dataTables_wrapper {
+    padding: 1rem 1.25rem;
+}
+
+/* Linha superior: "Mostrar X registros" + "Pesquisar:" */
+div.dataTables_wrapper div.row:first-child {
+    margin-bottom: .5rem;
+}
+
+/* Linha inferior: "Exibindo X a Y de Z" + paginação */
+div.dataTables_wrapper div.row:last-child {
+    margin-top: .5rem;
+    padding-top: .5rem;
+    border-top: 1px solid var(--bs-border-color, #dee2e6);
+}
+
+/* Inputs de busca e length */
+div.dataTables_wrapper div.dataTables_length select,
+div.dataTables_wrapper div.dataTables_filter input {
+    display: inline-block;
+    width: auto;
+}
+
+/* 5. Impressão: esconde a navegação */
+@media print {
+    .navbar, #sidebar, .sidebar-backdrop { display: none !important; }
+    #conteudo { margin: 0 !important; padding: 0 !important; }
+}

@@ -110,6 +110,48 @@ ul.alert-dropdown {
     width: 200px;
 }
 
+/* Navbar superior — mesma cor da sidebar (antes era o cinza-escuro padrão
+   do Bootstrap .navbar-inverse, destoando do azul da sidebar) */
+.navbar-inverse {
+    background-color: #12618F;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: .3px;
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    color: #fff;
+}
+
+/* Área do usuário logado + Sair, no canto direito da navbar */
+.navbar-user-area {
+    margin-right: 5px;
+}
+
+.navbar-user-area>li>a {
+    color: rgba(255, 255, 255, 0.85) !important;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.navbar-user-nome>a {
+    cursor: default;
+    font-weight: 500;
+    color: #fff !important;
+}
+
+.navbar-user-area>li>a:hover,
+.navbar-user-area>li>a:focus {
+    background-color: rgba(0, 0, 0, 0.15);
+    color: #fff !important;
+}
+
 /* Side Navigation */
 
 @media(min-width:768px) {
@@ -130,7 +172,9 @@ ul.alert-dropdown {
 
     .side-nav>li>a {
         width: 225px;
-        color: #FFF !important;
+        color: rgba(255, 255, 255, 0.92) !important;
+        transition: background-color .12s ease, border-left-color .12s ease;
+        border-left: 3px solid transparent;
     }
 
     .side-nav li a:hover,
@@ -138,21 +182,65 @@ ul.alert-dropdown {
         outline: none;
         background-color: #12618F !important;
     }
+
+    .side-nav>li>a:hover,
+    .side-nav>li>a:focus {
+        border-left-color: #7fc4ec;
+    }
+}
+
+.side-nav>li>a>.fa {
+    width: 20px;
+    text-align: center;
+    margin-right: 4px;
 }
 
 .side-nav>li>ul {
     padding: 0;
+    background-color: rgba(0, 0, 0, 0.12);
 }
 
 .side-nav>li>ul>li>a {
     display: block;
     padding: 10px 15px 10px 38px;
     text-decoration: none;
-    color: #FFF;
+    color: rgba(255, 255, 255, 0.85);
+    transition: background-color .12s ease, color .12s ease;
 }
 
 .side-nav>li>ul>li>a:hover {
     color: #fff;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Botão de recolher/expandir a sidebar (desktop) */
+.btn-sidebar-toggle {
+    float: left;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    padding: 15px 15px;
+    cursor: pointer;
+}
+
+.btn-sidebar-toggle:hover,
+.btn-sidebar-toggle:focus {
+    color: #ccc;
+    outline: none;
+}
+
+@media(min-width:768px) {
+    /* Sidebar recolhida: some a coluna lateral e o conteúdo volta a ocupar
+       a largura toda. Preferência persistida em localStorage (ver header.php
+       e main.js) — por isso a classe fica no <html>, não no <body>. */
+    html.sidebar-collapsed .side-nav {
+        display: none;
+    }
+
+    html.sidebar-collapsed #page-wrapper {
+        padding-left: 0;
+    }
 }
 
 /* Flot Chart Containers */
@@ -228,28 +316,141 @@ ul.alert-dropdown {
 }
 
 /* LOGIN */
-.login-form {
-    background: #FFFFFF;
-    max-width: 360px;
-    margin-left: -180px;
-    margin: 0 auto;
-    padding: 20px;
-    margin: 0 auto;
+
+/* Página de login/erro (sem sidebar/navbar) não deve reservar o espaço do
+   topo fixo que as páginas logadas usam — sem isso sobrava um vão vazio de
+   ~100px acima do card antes do conteúdo aparecer. Centraliza o card na
+   tela toda, em vez de nascer encostado no topo. */
+body.pagina-publica {
+    margin: 0;
+    min-height: 100vh;
+    background: #eef3f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.login-form input {
+body.pagina-publica #wrapper {
     width: 100%;
-    margin-bottom: 1.4rem;
-    padding: 1rem;
-    background-color: #ecf2f4;
-    border-radius: 0.2rem;
-    border: none;
+    padding: 20px;
+}
+
+.login-form {
+    background: #FFFFFF;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 36px 34px 30px;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px rgba(21, 112, 166, 0.15), 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Cabeçalho com ícone + nome do sistema */
+.login-marca {
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.login-marca>.fa {
+    font-size: 34px;
+    color: #1570A6;
+    background: #eaf4fa;
+    width: 72px;
+    height: 72px;
+    line-height: 72px;
+    border-radius: 50%;
+    margin-bottom: 14px;
 }
 
 .login-form h3 {
     text-align: center;
-    margin-top: 0;
-    margin-bottom: 20px;
+    margin: 0 0 6px;
+    color: #12618F;
+    font-weight: 600;
+}
+
+.login-subtitulo {
+    color: #8a99a6;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* Campo com ícone à esquerda dentro do input */
+.login-campo {
+    position: relative;
+    margin-bottom: 1.1rem;
+}
+
+.login-campo>.fa {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9fb1bd;
+    font-size: 15px;
+    pointer-events: none;
+}
+
+.login-form input {
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0.85rem 1rem 0.85rem 2.6rem;
+    background-color: #f4f7f9;
+    border-radius: 6px;
+    border: 1px solid #e1e8ed;
+    transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #1570A6;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(21, 112, 166, 0.12);
+}
+
+/* O alerta de erro herdava o vermelho "cheio" do Bootstrap, que brigava
+   com o restante do card (ver print do usuário) — aqui fica um aviso
+   discreto, legível, no mesmo tom do resto da tela. */
+.login-form .alert {
+    font-size: 13px;
+    padding: 10px 34px 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+    position: relative;
+}
+
+.login-form .alert-danger {
+    background-color: #fdecea;
+    border: 1px solid #f5c6c2;
+    color: #a3352a;
+}
+
+.login-form .alert-success {
+    background-color: #eaf6ec;
+    border: 1px solid #c3e6cb;
+    color: #24693a;
+}
+
+.login-form .alert .close {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    opacity: .5;
+}
+
+.login-form .btn-success {
+    background-color: #1570A6;
+    border-color: #1570A6;
+    border-radius: 6px;
+    padding: 11px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    transition: background-color .15s ease;
+}
+
+.login-form .btn-success:hover,
+.login-form .btn-success:focus {
+    background-color: #12618F;
+    border-color: #12618F;
 }
 
 /* MARGIN */
