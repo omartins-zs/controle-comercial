@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/controle_comercial/';
+$config['base_url'] = getenv('APP_BASE_URL') ?: 'http://localhost/controle_comercial/';
 
 /*
 |--------------------------------------------------------------------------
@@ -383,11 +383,16 @@ $config['encryption_key'] = '';
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
-$config['sess_driver'] = 'database';
+// Driver/caminho de sessão sobrescrevíveis via ambiente: no Docker local o
+// docker-compose.yml define SESSION_DRIVER=files (evita 1 SELECT + 1
+// UPDATE/INSERT no MySQL por request só para ler/gravar sessão). Fora do
+// Docker (ex.: Laragon) essas variáveis não existem e o comportamento
+// original ('database') é mantido sem nenhuma mudança.
+$config['sess_driver'] = getenv('SESSION_DRIVER') ?: 'database';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_samesite'] = 'Lax';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = 'ci_sessions';
+$config['sess_save_path'] = getenv('SESSION_SAVE_PATH') ?: 'ci_sessions';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;

@@ -73,12 +73,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+// Permite sobrescrever a conexão via variáveis de ambiente (usado pelo Docker).
+// Se as variáveis não existirem (ex.: rodando local via Laragon), mantém os
+// valores padrão de sempre.
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'blog_comercial',
+	'hostname' => getenv('DB_HOST') ?: 'localhost',
+	'username' => getenv('DB_USERNAME') ?: 'root',
+	'password' => getenv('DB_PASSWORD') ?: '',
+	'database' => getenv('DB_DATABASE') ?: 'blog_comercial',
+	'port' => getenv('DB_PORT') ?: '',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
