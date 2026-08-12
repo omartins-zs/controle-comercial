@@ -1,0 +1,13 @@
+.git
+.gitignore
+application/cache/*
+application/logs/*
+!application/cache/index.html
+!application/logs/index.html
+sql
+blog_comercial.sql
+Anotacoes.txt
+anotqacoessa.txt
+docker/mysql-init
+docker-compose.yml
+.env
