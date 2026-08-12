@@ -1,80 +1,67 @@
-   <!-- /page-wrapper -->
-   <div id="page-wrapper">
+<div class="container-fluid">
 
-       <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h1 class="h3 fw-light text-secondary mb-0">Usuários cadastrados</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mt-1 mb-0">
+                    <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
+                    <li class="breadcrumb-item active">Usuários</li>
+                </ol>
+            </nav>
+            <hr class="mt-2">
+        </div>
+    </div>
 
-           <!-- Page Heading -->
-           <div class="row">
-               <div class="col-lg-12">
+    <div class="row mb-3">
+        <div class="col-12 text-end">
+            <a href="<?= base_url('usuarios/add') ?>" class="btn btn-success">
+                <i class="fa fa-plus-square me-1"></i> Novo usuário
+            </a>
+        </div>
+    </div>
 
-                   <h1 class="display-4">Usuarios cadastrados</h1>
-                   <hr>
-                   <ol class="breadcrumb">
-                       <li><a href="<?= base_url() ?>">Home</a></li>
-                       <li class="active">Usuarios cadastrados</li>
-                   </ol>
-               </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <?php get_msg('msgerro'); get_msg('msgsucess'); ?>
+        </div>
+    </div>
 
-           </div>
-           <!-- /.row -->
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered mb-0" id="datatable">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $user) : ?>
+                        <tr>
+                            <td><?= $user->id ?></td>
+                            <td><?= html_escape($user->username) ?></td>
+                            <td><?= html_escape($user->email) ?></td>
+                            <td class="text-end text-nowrap">
+                                <a href="<?= base_url('usuarios/editar/' . $user->id) ?>"
+                                   title="Editar usuário"
+                                   class="btn btn-sm btn-warning">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a href="<?= base_url('usuarios/apagar/' . $user->id) ?>"
+                                   title="Apagar cadastro"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Tem certeza que deseja excluir este usuário?')">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-           <!-- Button de novo usuario -->
-           <div class="row margin-bottom10">
-               <div class="col-lg-12 text-right">
-                   <a href="<?= base_url('usuarios/add') ?>" title="Novo usuario" class="btn btn-success"><i class="fa fa-plus-square"></i></a>
-               </div>
-           </div>
-
-           <!-- Mensagens de sucesso e erro -->
-           <div class="row">
-               <div class="col-lg-12">
-                   <?php
-                    get_msg('msgerro');
-                    get_msg('msgsucess');
-                    ?>
-               </div>
-           </div>
-
-           <?php
-            // echo '<pre>';
-            // print_r($users);
-            // echo '</pre>';
-            ?>
-
-           <!-- Tabela -->
-           <div class="row">
-               <div class="col-lg-12">
-                   <table class="table table-bordered table-striped" id="datatable">
-                       <thead>
-                           <tr>
-                               <th>#</th>
-                               <th>Nome</th>
-                               <th>E-mail</th>
-                               <th>Ações</th>
-                               <!-- <th></th> -->
-                           </tr>
-                       </thead>
-                       <tbody>
-                           <?php foreach ($users as $user) : ?>
-                               <tr>
-                                   <td><?= $user->id ?></td>
-                                   <td><?= $user->username ?></td>
-                                   <td><?= $user->email ?></td>
-                                   <td class="text-right">
-                                       <a href="<?php base_url() ?>usuarios/editar/" title="editar produto" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i></a>
-                                       <a href="<?= base_url() ?>usuarios/apagar/" title="Apagar cadastro" class="btn btn-sm btn-danger"> <i class="fa fa-trash" aria-hidden="true"></i>
-                                       </a>
-                                   </td>
-                               </tr>
-
-                           <?php endforeach ?>
-                       </tbody>
-                   </table>
-               </div>
-           </div>
-           <!-- Fim tabela -->
-
-       </div>
-       <!-- /.container-fluid -->
-   </div>
-   <!-- /#page-wrapper -->
+</div>
