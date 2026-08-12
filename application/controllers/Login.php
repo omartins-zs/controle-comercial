@@ -12,6 +12,13 @@ class Login extends CI_Controller
 
 	public function index()
 	{
+		// Se o usuário já está autenticado (ex.: cookie de "lembrar-me" ainda
+		// válido), mandar direto pra home — sem isso a tela mostrava o menu
+		// completo E o formulário de login ao mesmo tempo, sobrepostos.
+		if ($this->ion_auth->logged_in()) {
+			redirect('home', 'refresh');
+		}
+
 		// Titulo da aba no navegador
 		$dados["titulo"] = "Login";
 
@@ -43,7 +50,8 @@ class Login extends CI_Controller
 
 	public function logout()
 	{
-		$logout = $this->ion_auth->logout();
+		$this->ion_auth->logout();
+		setar_msg('msgsucess', 'Você saiu do sistema.', 'sucesso');
 		redirect('login', 'refresh');
 	}
 }
