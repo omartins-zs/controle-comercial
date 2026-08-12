@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: controle_comercial_app
+    container_name: controle-comercial_app
     restart: unless-stopped
     ports:
       - "${APP_PORT:-8090}:80"
@@ -39,11 +39,11 @@ services:
       retries: 10
       start_period: 15s
     networks:
-      - controle_comercial
+      - controle-comercial
 
   db:
     image: mysql:8.0
-    container_name: controle_comercial_db
+    container_name: controle-comercial_db
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
@@ -62,11 +62,11 @@ services:
       timeout: 5s
       retries: 20
     networks:
-      - controle_comercial
+      - controle-comercial
 
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: controle_comercial_pma
+    container_name: controle-comercial_pma
     restart: unless-stopped
     environment:
       PMA_HOST: db
@@ -78,11 +78,11 @@ services:
       db:
         condition: service_healthy
     networks:
-      - controle_comercial
+      - controle-comercial
 
 volumes:
   db_data:
 
 networks:
-  controle_comercial:
+  controle-comercial:
     driver: bridge
